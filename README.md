@@ -49,6 +49,7 @@ The RGB camera doesn't just take single photos — moved through a series of pre
 - **Costume and prop scanning** — capture cosplay pieces or fabric patterns for exact-fit pattern-making.
 - **Terrain and diorama digitizing** — for tabletop wargaming, model railroading, or scale-model work.
 - **Archiving** — museum- or gallery-grade 3D capture of art pieces at a scale most scanners can't handle.
+- **Miniature cinematography** — a precise, repeatable X/Y/Z gantry *is* a motion-control camera rig. Program a dolly, pan, or reveal move over a tabletop miniature or diorama and repeat it exactly, take after take — the kind of rig practical-effects and product shoots normally rent, running on a machine that was already built for precision motion.
 
 **Scientific**
 - **Specimen digitization** — fossils, botanical samples, insects — captured across depth, color, near-IR, and thermal channels at once.
