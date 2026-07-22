@@ -80,3 +80,11 @@ Ballpark starting points only, to be refined once real loads (tools, electronics
 - **Closed-loop control**: rather than only logging a scan for a human to review afterward, have the AI vision layer feed back into the machine controller in real time — e.g., auto-adjusting feed rate or toolpath when a defect or stock shift is detected, or triggering an automatic stop on a thermal safety anomaly.
 - **Autonomous job setup**: AI interpretation of a stock scan (material type, boundaries, defects) to auto-generate or adjust a toolpath, instead of a human reviewing scan data before every job.
 - Fully conceptual at this stage — depends on the electronics/controls design (currently TBD) having enough onboard or networked compute to run inference in real time.
+
+### Photogrammetry, and usages beyond the shop (NOT a decision — exploratory)
+
+- **Photogrammetry**: the RGB camera can do more than single shots — moving it to a series of precisely known gantry positions and combining the images (structure-from-motion / multi-view stereo) is exactly what photogrammetry needs, except normally that camera-position data has to be estimated from the images themselves. Here it's already known exactly, which could make reconstruction faster and more accurate than typical photogrammetry workflows, and gives a second, cross-checkable 3D reconstruction method alongside the LiDAR depth data.
+- **Artistic usages**: digitizing sculpture or relief work for reproduction or archiving; scanning cosplay/costume pieces for pattern-making; digitizing terrain/dioramas for tabletop gaming or model railroading; capturing natural objects to reinterpret into a carved toolpath.
+- **Scientific usages**: specimen digitization (fossils, botanical samples, insects) using the combined depth/color/near-IR/thermal channels; material science documentation of composites/defects; a hands-on platform for demonstrating vision + robotics + AI integration.
+- **Industrial usages**: reverse-engineering discontinued or broken parts; dimensional QA against CAD models; automated stock alignment and job setup; shop inventory/parts cataloging; machine self-calibration; a vision front end for a future pick-and-place head.
+- All still open exploration — no builds, no hardware selections beyond the candidate LiDAR camera noted above.

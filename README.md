@@ -28,16 +28,32 @@ Sensors that only log data are a photo album. The plan is to feed all five chann
 
 This is the difference between "a CNC with a camera" and a machine that actually watches what it's doing.
 
+### Photogrammetry, for free
+
+The RGB camera doesn't just take single photos — moved through a series of precisely known gantry positions, its images can be combined via structure-from-motion / multi-view stereo into a full 3D reconstruction. Normal photogrammetry has to *estimate* camera position from the photos themselves; this gantry already knows it exactly, which means faster, more accurate reconstructions, and a second 3D method that cross-checks the LiDAR depth data.
+
 ### What that combination unlocks
 
+**Industrial**
 - **Auto stock alignment** — scan the bed before a job, detect actual position/skew of the material, and correct the toolpath instead of jigging by hand.
-- **Digitize-then-carve** — scan an irregular or damaged object, build a 3D model of it, and generate a toolpath to reproduce or repair it.
 - **Pre/post-cut QA** — scan before and after a pass to verify the cut matches intent.
-- **Thermal safety monitoring** — catch scorching/char risk during laser work, or bearing/spindle overheating during routing, before it's visible to the eye — a real-time early-warning layer during any cutting job.
-- **Defect detection invisible to the eye** — thermal signatures can expose delamination, voids, or moisture pockets inside plywood and composites that depth/RGB alone would miss.
+- **Thermal safety monitoring** — catch scorching/char risk during laser work, or bearing/spindle overheating during routing, before it's visible to the eye.
+- **Defect detection invisible to the eye** — thermal signatures can expose delamination, voids, or moisture pockets inside plywood and composites.
 - **A DIY coordinate-measuring machine** — check a finished part's real dimensions against its CAD model, at a scale full CMMs are usually too expensive to cover.
 - **Self-calibration** — use the scanner to check the machine's own gantry squareness, rail straightness, and bed flatness.
-- **Uses that have nothing to do with cutting** — large-object 3D digitizing (furniture, parts, costume pieces), shop inventory scans, a vision front end for a future pick-and-place head.
+- **Reverse engineering** — scan a broken or discontinued part, reconstruct it, and remake it.
+- **Shop inventory** and a vision front end for a future pick-and-place head.
+
+**Artistic**
+- **Digitize-then-carve** — scan a sculpture, relief, or found object and generate a toolpath to reproduce or reinterpret it.
+- **Costume and prop scanning** — capture cosplay pieces or fabric patterns for exact-fit pattern-making.
+- **Terrain and diorama digitizing** — for tabletop wargaming, model railroading, or scale-model work.
+- **Archiving** — museum- or gallery-grade 3D capture of art pieces at a scale most scanners can't handle.
+
+**Scientific**
+- **Specimen digitization** — fossils, botanical samples, insects — captured across depth, color, near-IR, and thermal channels at once.
+- **Material science documentation** — recording composite/defect structure invisible to a single sensor type.
+- **A hands-on platform** for teaching or demonstrating vision, robotics, and AI integration.
 
 None of this is built yet — see [`design-notes.md`](./design-notes.md) for the running log of what's decided versus still open. The candidate depth hardware is the [Onion Tau LiDAR Camera (TA-L10)](https://onion.io/), a USB-C depth + grayscale camera; RGB, near-IR, and thermal modules haven't been selected yet, and no vision model or compute platform has been chosen for the AI layer.
 
