@@ -67,3 +67,16 @@ Ballpark starting points only, to be refined once real loads (tools, electronics
 - **Material property inference**: thermal signatures can expose internal defects invisible to depth/RGB alone — delamination in plywood or composites, voids, moisture pockets.
 - **Object/material classification**: feeding depth + grayscale + thermal into a vision model to identify *what* is on the bed, not just that something is — material type, defect flags, part ID for sorting/inventory. This is what upgrades "scanning" into genuinely automated inspection rather than a manual eyeball step.
 - No specific thermal module researched or chosen yet — same open-exploration status as the LiDAR camera itself.
+
+### Full sensor suite: add RGB and near-IR cameras (NOT a decision — exploratory, no hardware selected)
+
+- **RGB camera**: true color imaging on top of the LiDAR's grayscale — enables color-based material/finish identification and normal documentation photos, which grayscale/depth alone can't do.
+- **Near-IR camera** (distinct from the far-IR thermal module above): near-infrared can reveal material differences invisible in visible light (moisture content, certain dye/plastic distinctions) and can see through smoke/dust or bright cutting glare (laser flash, sparks) that would wash out or blind a visible-light camera.
+- Candidate scan-head sensor stack is now five channels: depth, grayscale, color (RGB), near-IR, and thermal. No RGB/near-IR hardware researched or chosen yet.
+
+### AI vision and control (NOT a decision — exploratory concept, no model/compute platform chosen)
+
+- Feed the multi-channel scan data into a vision model to move past passive scanning into active decision-making: object/material classification, defect detection, automatic response.
+- **Closed-loop control**: rather than only logging a scan for a human to review afterward, have the AI vision layer feed back into the machine controller in real time — e.g., auto-adjusting feed rate or toolpath when a defect or stock shift is detected, or triggering an automatic stop on a thermal safety anomaly.
+- **Autonomous job setup**: AI interpretation of a stock scan (material type, boundaries, defects) to auto-generate or adjust a toolpath, instead of a human reviewing scan data before every job.
+- Fully conceptual at this stage — depends on the electronics/controls design (currently TBD) having enough onboard or networked compute to run inference in real time.
