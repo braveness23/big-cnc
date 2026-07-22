@@ -1,6 +1,6 @@
 # big-cnc
 
-A large-format, multi-tool CNC platform — 4'×8' capacity, a pivoting bed, and a gantry built to carry more than one kind of head. Router, laser, drag knife, and pen are the obvious ones. **A gantry-mounted multi-spectral vision system, driven by AI, is the one that turns this from a cutting machine into a machine that sees, thinks, and reacts.**
+A large-format, multi-tool CNC platform — 4'×8' capacity, a pivoting bed, and a gantry built to carry more than one kind of head. Router, laser, drag knife, pen, and (candidate) plasma cutter are the obvious ones. **A gantry-mounted multi-spectral vision system, driven by AI, is the one that turns this from a cutting machine into a machine that sees, thinks, and reacts.**
 
 ## Why the scanner is the headline, not an accessory
 
@@ -54,10 +54,12 @@ The RGB camera doesn't just take single photos — moved through a series of pre
 - **Self-calibration** — use the scanner to check the machine's own gantry squareness, rail straightness, and bed flatness.
 - **Reverse engineering** — scan a broken or discontinued part, reconstruct it, and remake it.
 - **Shop inventory** and a vision front end for a future pick-and-place head.
+- **Metal cutting** — a candidate plasma cutter would close the gap none of the other four tools cover: this machine already lists metal as supported material, and 220V/60A (already available) is the right range for plasma cutter power draw.
 
 **Artistic**
 - **Digitize-then-carve** — scan a sculpture, relief, or found object and generate a toolpath to reproduce or reinterpret it.
 - **Costume and prop scanning** — capture cosplay pieces or fabric patterns for exact-fit pattern-making.
+- **Body scanning** — the bed pivots vertical, so a person can stand in front of it for a full scan pass: exact-fit costume/armor patterns instead of standard sizing.
 - **Terrain and diorama digitizing** — for tabletop wargaming, model railroading, or scale-model work.
 - **Archiving** — museum- or gallery-grade 3D capture of art pieces at a scale most scanners can't handle; UV reveals old varnish layers and prior repairs on restoration work that visible light never would.
 - **Miniature cinematography** — a precise, repeatable X/Y/Z gantry *is* a motion-control camera rig. Program a dolly, pan, or reveal move over a tabletop miniature or diorama and repeat it exactly, take after take — the kind of rig practical-effects and product shoots normally rent, running on a machine that was already built for precision motion.
@@ -66,6 +68,9 @@ The RGB camera doesn't just take single photos — moved through a series of pre
 - **Specimen digitization** — fossils, botanical samples, insects — captured across depth, color, near-IR, thermal, and UV-fluorescence channels at once.
 - **Material science documentation** — recording composite/defect structure invisible to a single sensor type.
 - **A hands-on platform** for teaching or demonstrating vision, robotics, and AI integration.
+- **Biometric documentation** — body-composition or posture tracking over time, using the same body-scanning capability.
+
+> **Note on body scanning**: a person standing near a machine that also carries a router, laser, and candidate plasma cutter needs a real, hardware-enforced "scan-only" mode — cutting tools mechanically or electrically disabled, not just a software flag. That's an open safety question, not a solved one.
 
 None of this is built yet — see [`design-notes.md`](./design-notes.md) for the running log of what's decided versus still open. The candidate depth hardware is the [Onion Tau LiDAR Camera (TA-L10)](https://onion.io/), a USB-C depth + grayscale camera; RGB, near-IR, thermal, and UV modules haven't been selected yet, and no vision model or compute platform has been chosen for the AI layer.
 

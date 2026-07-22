@@ -105,3 +105,18 @@ Ballpark starting points only, to be refined once real loads (tools, electronics
 - **Remake it**: generate a toolpath (router for bulk profile, laser/drag knife for fine detail) and cut a faithful reproduction — a single replacement piece, or a full building's matching trim run from one surviving original.
 - This is the anchor application for the "digitize-then-carve" and reverse-engineering ideas already logged above — historic preservation/restoration as the concrete case, not just an abstract capability list.
 - Fully aspirational — no build, no scan-to-toolpath software pipeline written yet.
+
+### Additional tool candidate: plasma cutter (NOT a decision — exploratory, no hardware selected)
+
+- "Materials to support" already lists metal, but none of the four tools decided so far (router, laser, drag knife, pen) actually cut sheet metal well — a plasma cutter is the natural fit for that gap on the carriage.
+- The 220V/60A single-phase power already available for this machine is in the right range for plasma cutter power draw, which is a good sign this fits the existing electrical plan rather than forcing a change to it.
+- Same open problem as before, now with a third contributor: plasma adds sparks, UV flash, and molten spatter to the fume/dust/reflection conflict already flagged between the router and laser sharing the machine — still a deferred, unsolved multi-tool coexistence question.
+- Tool-changing approach for plasma is subject to the same open question as the rest of the carriage: swap-in tool vs. simultaneously mounted.
+
+### New usage: body scanning (NOT a decision — exploratory)
+
+- The existing sensor stack (depth, RGB, near-IR, thermal, UV) applied to a person instead of a workpiece — a full-body scan pass, most naturally done with the bed pivoted vertical so a person can stand in front of it while the gantry sweeps.
+- **Artistic**: custom costume/armor fitting — exact body geometry instead of a generic pattern, extending the cosplay/fabric-pattern use case already noted.
+- **Scientific**: biometric documentation, posture/body-composition tracking over time.
+- **Industrial**: custom ergonomic fixtures or furniture fitted to an actual body rather than standard sizing.
+- **Safety note, distinct from object scanning**: scanning a person means a person standing near a machine that also carries a router, laser, and (candidate) plasma cutter. This needs a clearly separate "scan-only" mode with cutting tools mechanically or electrically disabled, not just a software safeguard — a real open safety question to resolve before this is anything more than a brainstorm item.
