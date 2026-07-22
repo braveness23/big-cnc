@@ -59,3 +59,11 @@ Ballpark starting points only, to be refined once real loads (tools, electronics
 - **Self-calibration**: using the scanner to measure the machine's own gantry squareness, rail straightness, and bed flatness — directly relevant to the still-open precision target question above.
 - **Non-cutting uses for the same platform**: large-format 3D digitizing of arbitrary objects (furniture, parts, costume/fabric pieces); a DIY coordinate-measuring-machine-style dimensional check against CAD models; reverse-engineering broken or discontinued parts; shop inventory/parts cataloging; a bin-picking vision front end for a possible future pick-and-place head.
 - **Open questions**: whether the scanner is a permanent carriage fixture or a tool-changed head like the others; USB-C cable management through carriage wiring; lens protection from chips/fumes if it shares carriage space with the router/laser.
+
+### Multi-modal sensing: adding thermal (NOT a decision — exploratory, no hardware selected)
+
+- Pairing the LiDAR (shape + grayscale) with a thermal/IR camera gives the scan head three channels instead of one: shape, texture, and heat. Most hobbyist machines have none of these; this one could have all three.
+- **Cut safety monitoring**: thermal could catch scorching/char risk during laser work, or bearing/spindle overheating during routing, before it's visible optically — an early-warning layer on top of the fire/fume concern already flagged as a deferred multi-tool problem.
+- **Material property inference**: thermal signatures can expose internal defects invisible to depth/RGB alone — delamination in plywood or composites, voids, moisture pockets.
+- **Object/material classification**: feeding depth + grayscale + thermal into a vision model to identify *what* is on the bed, not just that something is — material type, defect flags, part ID for sorting/inventory. This is what upgrades "scanning" into genuinely automated inspection rather than a manual eyeball step.
+- No specific thermal module researched or chosen yet — same open-exploration status as the LiDAR camera itself.
