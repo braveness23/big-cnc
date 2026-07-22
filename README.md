@@ -8,15 +8,16 @@ Most affordable 3D scanners are handheld or turntable rigs that track position b
 
 That reframes the whole machine: it isn't a CNC that happens to have a camera bolted on. It's a general-purpose precision motion platform, and cutting is just one of the things you can put on the end of it. Sensing is the other — and it doesn't stop at shape.
 
-### Five channels, not one
+### Six channels, not one
 
-Pair the LiDAR (depth + grayscale) with a **regular RGB camera**, a **near-IR camera**, and a **thermal camera**, and the scan head stops seeing just geometry — it sees shape, texture, color, hidden material properties, *and heat*. That's a sensing stack most hobbyist machines don't have any part of, let alone all five:
+Pair the LiDAR (depth + grayscale) with a **regular RGB camera**, a **near-IR camera**, a **thermal camera**, and a **UV/fluorescence channel**, and the scan head stops seeing just geometry — it sees shape, texture, color, hidden material properties, heat, *and things that only fluoresce under UV*. That's a sensing stack most hobbyist machines don't have any part of, let alone all six:
 
 - **Shape (depth)** — precise 3D geometry of whatever's on the bed.
 - **Texture (grayscale)** — surface detail, edges, markings.
 - **Color (RGB)** — true color for finish/material identification and normal documentation photos.
 - **Hidden detail (near-IR)** — sees material differences invisible to the eye, and cuts through smoke, dust, and laser/spark glare that would blind a regular camera.
-- **Heat (thermal)** — material state and internal condition invisible to all four of the others.
+- **Heat (thermal)** — material state and internal condition invisible to the other channels.
+- **Fluorescence (UV)** — reveals old varnish/repairs on restoration pieces, distinctive signatures on mineral/botanical specimens, and adhesive/resin cure state — none of it visible under normal light.
 
 ### The brain on top: AI vision and control
 
@@ -38,7 +39,7 @@ The RGB camera doesn't just take single photos — moved through a series of pre
 - **Auto stock alignment** — scan the bed before a job, detect actual position/skew of the material, and correct the toolpath instead of jigging by hand.
 - **Pre/post-cut QA** — scan before and after a pass to verify the cut matches intent.
 - **Thermal safety monitoring** — catch scorching/char risk during laser work, or bearing/spindle overheating during routing, before it's visible to the eye.
-- **Defect detection invisible to the eye** — thermal signatures can expose delamination, voids, or moisture pockets inside plywood and composites.
+- **Defect detection invisible to the eye** — thermal signatures can expose delamination, voids, or moisture pockets inside plywood and composites; UV can catch bad adhesive/resin cure on a bonded joint before it's a problem.
 - **A DIY coordinate-measuring machine** — check a finished part's real dimensions against its CAD model, at a scale full CMMs are usually too expensive to cover.
 - **Self-calibration** — use the scanner to check the machine's own gantry squareness, rail straightness, and bed flatness.
 - **Reverse engineering** — scan a broken or discontinued part, reconstruct it, and remake it.
@@ -48,15 +49,15 @@ The RGB camera doesn't just take single photos — moved through a series of pre
 - **Digitize-then-carve** — scan a sculpture, relief, or found object and generate a toolpath to reproduce or reinterpret it.
 - **Costume and prop scanning** — capture cosplay pieces or fabric patterns for exact-fit pattern-making.
 - **Terrain and diorama digitizing** — for tabletop wargaming, model railroading, or scale-model work.
-- **Archiving** — museum- or gallery-grade 3D capture of art pieces at a scale most scanners can't handle.
+- **Archiving** — museum- or gallery-grade 3D capture of art pieces at a scale most scanners can't handle; UV reveals old varnish layers and prior repairs on restoration work that visible light never would.
 - **Miniature cinematography** — a precise, repeatable X/Y/Z gantry *is* a motion-control camera rig. Program a dolly, pan, or reveal move over a tabletop miniature or diorama and repeat it exactly, take after take — the kind of rig practical-effects and product shoots normally rent, running on a machine that was already built for precision motion.
 
 **Scientific**
-- **Specimen digitization** — fossils, botanical samples, insects — captured across depth, color, near-IR, and thermal channels at once.
+- **Specimen digitization** — fossils, botanical samples, insects — captured across depth, color, near-IR, thermal, and UV-fluorescence channels at once.
 - **Material science documentation** — recording composite/defect structure invisible to a single sensor type.
 - **A hands-on platform** for teaching or demonstrating vision, robotics, and AI integration.
 
-None of this is built yet — see [`design-notes.md`](./design-notes.md) for the running log of what's decided versus still open. The candidate depth hardware is the [Onion Tau LiDAR Camera (TA-L10)](https://onion.io/), a USB-C depth + grayscale camera; RGB, near-IR, and thermal modules haven't been selected yet, and no vision model or compute platform has been chosen for the AI layer.
+None of this is built yet — see [`design-notes.md`](./design-notes.md) for the running log of what's decided versus still open. The candidate depth hardware is the [Onion Tau LiDAR Camera (TA-L10)](https://onion.io/), a USB-C depth + grayscale camera; RGB, near-IR, thermal, and UV modules haven't been selected yet, and no vision model or compute platform has been chosen for the AI layer.
 
 ## What's actually decided (see design-notes.md for the full log)
 

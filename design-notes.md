@@ -88,3 +88,11 @@ Ballpark starting points only, to be refined once real loads (tools, electronics
 - **Scientific usages**: specimen digitization (fossils, botanical samples, insects) using the combined depth/color/near-IR/thermal channels; material science documentation of composites/defects; a hands-on platform for demonstrating vision + robotics + AI integration.
 - **Industrial usages**: reverse-engineering discontinued or broken parts; dimensional QA against CAD models; automated stock alignment and job setup; shop inventory/parts cataloging; machine self-calibration; a vision front end for a future pick-and-place head.
 - All still open exploration — no builds, no hardware selections beyond the candidate LiDAR camera noted above.
+
+### Sixth channel: UV / fluorescence imaging (NOT a decision — exploratory, no hardware selected)
+
+- Adding a UV light source + camera gives a sensing mode none of the other five channels (depth, grayscale, RGB, near-IR, thermal) can touch: many materials fluoresce or absorb differently under UV in ways invisible under normal light.
+- **Artistic**: art/furniture restoration work commonly uses UV to reveal old varnish layers, prior repairs, or retouching invisible under visible light — directly useful if this platform is already being framed as a large-format digitizing/restoration tool.
+- **Scientific**: mineral, botanical, and biological specimens often fluoresce distinctively under UV — another data channel for the specimen-digitization use case already noted, and a way to authenticate materials (certain dyes, inks, security features) that don't show up any other way.
+- **Industrial**: UV can reveal adhesive/resin cure state and residue that's invisible optically — useful for QA on any bonded joint or composite lay-up before continuing a job.
+- Ties directly into the AI vision/control concept above — one more channel for the classification model to reason over, not a separate standalone feature.
