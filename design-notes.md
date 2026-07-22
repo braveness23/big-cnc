@@ -96,3 +96,12 @@ Ballpark starting points only, to be refined once real loads (tools, electronics
 - **Scientific**: mineral, botanical, and biological specimens often fluoresce distinctively under UV — another data channel for the specimen-digitization use case already noted, and a way to authenticate materials (certain dyes, inks, security features) that don't show up any other way.
 - **Industrial**: UV can reveal adhesive/resin cure state and residue that's invisible optically — useful for QA on any bonded joint or composite lay-up before continuing a job.
 - Ties directly into the AI vision/control concept above — one more channel for the classification model to reason over, not a separate standalone feature.
+
+### Flagship use case: reproducing historical architectural fixtures (NOT a decision — aspirational, exploratory)
+
+- The concrete story that ties the whole sensing + AI + fabrication stack together: take a molding profile, corbel, capital, baluster, or rosette from a historic building — damaged, missing a match, or the only surviving original — and reproduce it faithfully.
+- **Scan it**: depth + RGB capture exact profile and proportions; UV reveals old varnish/prior repairs worth preserving or matching rather than guessing at the original finish; thermal/near-IR can flag rot or hidden damage in the original before it's trusted as a master.
+- **Understand it**: the AI vision layer turns the scan into a clean model instead of a human tracing profiles by hand off a fragile original.
+- **Remake it**: generate a toolpath (router for bulk profile, laser/drag knife for fine detail) and cut a faithful reproduction — a single replacement piece, or a full building's matching trim run from one surviving original.
+- This is the anchor application for the "digitize-then-carve" and reverse-engineering ideas already logged above — historic preservation/restoration as the concrete case, not just an abstract capability list.
+- Fully aspirational — no build, no scan-to-toolpath software pipeline written yet.

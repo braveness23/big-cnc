@@ -21,13 +21,23 @@ Pair the LiDAR (depth + grayscale) with a **regular RGB camera**, a **near-IR ca
 
 ### The brain on top: AI vision and control
 
-Sensors that only log data are a photo album. The plan is to feed all five channels into a vision model and close the loop back into the machine controller — in real time, not "review the scan later":
+Sensors that only log data are a photo album. The plan is to feed all six channels into a vision model and close the loop back into the machine controller — in real time, not "review the scan later":
 
 - **See it, classify it** — identify material type, defects, and part ID automatically, instead of a human eyeballing a scan.
 - **React to it** — auto-adjust feed rate or toolpath the moment a defect or stock shift is detected; auto-stop on a thermal safety anomaly, before smoke becomes fire.
 - **Set the job up itself** — interpret a stock scan (boundaries, material, defects) and generate or adjust the toolpath without a human reviewing the data first.
 
 This is the difference between "a CNC with a camera" and a machine that actually watches what it's doing.
+
+### The flagship vision: reproducing historical architectural fixtures
+
+This is the story that ties the whole platform together: a molding profile, corbel, capital, baluster, or rosette from a historic building — damaged, missing a match, or the only surviving original of its kind.
+
+- **Scan it** — depth and RGB capture its exact profile and proportions; UV reveals old varnish and prior repairs worth preserving or matching, rather than guessing at the original finish; thermal/near-IR can flag rot or hidden damage in the piece before it's trusted as a master.
+- **Understand it** — the AI vision layer turns that scan into a clean, faithful model instead of a human tracing profiles by hand off a fragile original.
+- **Remake it** — the same machine generates a toolpath (router for the bulk profile, laser or drag knife for fine detail) and cuts a faithful reproduction — one replacement piece, or an entire building's matching trim run from a single surviving original.
+
+Every other capability on this page — depth, color, thermal, UV, photogrammetry, classification, closed-loop control — exists in service of this loop: **see it exactly, then make it exactly.** That's the difference between a machine that cuts what you draw and one that can save something that would otherwise be lost.
 
 ### Photogrammetry, for free
 
