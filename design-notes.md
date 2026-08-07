@@ -120,3 +120,33 @@ Ballpark starting points only, to be refined once real loads (tools, electronics
 - **Scientific**: biometric documentation, posture/body-composition tracking over time.
 - **Industrial**: custom ergonomic fixtures or furniture fitted to an actual body rather than standard sizing.
 - **Safety note, distinct from object scanning**: scanning a person means a person standing near a machine that also carries a router, laser, and (candidate) plasma cutter. This needs a clearly separate "scan-only" mode with cutting tools mechanically or electrically disabled, not just a software safeguard — a real open safety question to resolve before this is anything more than a brainstorm item.
+
+## 2026-08-06 — Electronics parts on hand (inventory, NOT a design decision)
+
+Cataloged from a parts box; photos in `images/components/`. This is an inventory snapshot only — no controller architecture has been chosen, and nothing here is confirmed as the final motion-control electronics for the build.
+
+- **Stepper motors (5x, NEMA 17 size)**: mixed lot, includes a labeled "Wantai 42BYGH610" (1.2A, 1.8°/step) and a "17HS08-1004S3" (dated 2014.05.21), plus three more unlabeled units of the same form factor, all with 4-wire leads (`nema17-stepper-motors-group.jpg`, `nema17-stepper-motors-labels.jpg`)
+- **Stepper drivers**: one standalone microstep driver module (DC 9–42V, up to 3.5A, DIP-switch configurable — TB6600-style) (`stepper-driver-microstep-tb6600-style.jpg`), plus an Arduino Uno + CNC Shield populated with 4x A4988 driver modules, silkscreened for X/Y/Z/A axes (`arduino-cnc-shield-a4988-drivers-1.jpg`, `arduino-cnc-shield-a4988-drivers-2.jpg`) — **the Arduino is already flashed with GRBL**, confirmed, not just a GRBL-compatible shield
+- **Limit switches**: 5x mechanical lever-arm microswitches, pre-wired with small connectors — for axis end-stops (`limit-switches-endstops.jpg`)
+- **Connectors**: a bag of GX16-4 aviation connectors (16mm shell, 4-pin, panel-mount) for motor/cable disconnects (`gx16-4-aviation-connectors.jpg`); one small connector part still in its retail packaging, exact type not yet identified (`connector-part-packaged.jpg`)
+- **Heatsinks**: small self-adhesive aluminum heatsinks, sized for driver ICs (`aluminum-heatsinks.jpg`)
+- **Cabling**: one USB-A to USB-B cable, for Arduino programming/control (`usb-a-b-cable.jpg`)
+
+Open question: whether the standalone higher-current driver module ends up driving the gantry, and what replaces the CNC Shield/GRBL stack for the controller — see follow-up below, this is no longer fully open.
+
+### Follow-up: CNC Shield ruled out for big-cnc
+
+- **Decision**: the Arduino Uno + CNC Shield (GRBL) from the inventory above will **not** be used for big-cnc. Firm decision, not a leaning.
+- Leaves the standalone higher-current stepper driver module as the only motion-control hardware on hand so far.
+- The 5x stepper motors, limit switches, connectors, heatsinks, and cabling cataloged above are unaffected by this — still on-hand parts, still unassigned to a specific role.
+
+### Follow-up: controller firmware — grblHAL
+
+- **Decision**: controller firmware is **grblHAL** — decided roughly a year prior to this entry (predates this journal), reaffirmed here. Firm decision, not a leaning.
+- grblHAL is the modern 32-bit successor to classic GRBL: same G-code/workflow model, but runs on STM32/ESP32/RP2040-class boards instead of 8-bit Arduino, with room for more axes, networking, plugin drivers, and closed-loop stepper support as the design matures.
+- This settles the earlier "GRBL on different hardware vs. LinuxCNC vs. something else" open question in favor of GRBL's lineage — just on genuinely modern hardware instead of the Arduino Uno + CNC Shield ruled out above.
+- Not yet chosen: specific grblHAL board/MCU, and how it maps to the on-hand steppers/driver/limit-switches inventory.
+
+### Follow-up: archived the original ChatGPT conversation this traces back to
+
+- Recovered a shared ChatGPT conversation from **May 6–13, 2025**, "CNC Machine Design Options" — the year-prior source of the grblHAL decision above. Full transcript archived at `references/chatgpt-cnc-design-2025-05.md`. Captured for the record, not reconciled against current design state.
