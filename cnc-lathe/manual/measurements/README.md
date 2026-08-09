@@ -47,9 +47,17 @@ number, e.g. `part22/`. Inside:
 4. **Bends aren't on the tracing** — a flat piece of paper can't record a
    dihedral angle. For every seam where two panels meet, separately:
    - measure the angle between them with an angle finder/bevel gauge
-   - estimate or measure the inside corner radius (radius gauge, or "sharp"
-     if there isn't a meaningful one)
+   - measure the inside corner radius with a radius gauge (aka fillet gauge
+     — a cheap set of leaves with concave/convex arcs ground in; hold one
+     against the curve until it sits flush with no light gap), or the
+     sagitta trick if you don't have one: lay a straightedge across the
+     curve to get a chord length `c`, measure the perpendicular height `h`
+     from the chord's midpoint to the curve, radius = `h/2 + c^2/(8h)`
    - note which two panel letters that bend connects
+   - a rounded or chamfered corner *within* a single panel's own outline
+     (not a fold between two panels) is different — trace its true contour
+     as part of that panel's tracing instead, it gets fit directly from the
+     scan
 5. **Thickness**: calipers at any exposed/cut edge of the actual material
    (not estimated from the tracing).
 6. **Hole diameter**: calipers, separately from the traced center mark.

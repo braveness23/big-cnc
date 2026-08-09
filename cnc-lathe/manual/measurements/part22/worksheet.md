@@ -28,6 +28,16 @@ piece entirely).
 | C | right side wall | | |
 | D | raised end panel (tailstock-post mounting face) | | |
 
+**Trace the true outline** — you flagged rounded/chamfered panel corners on
+this part, so follow those curves/bevels in the tracing rather than
+squaring them off; log which corners in the table below.
+
+## Panel corner features
+
+| Panel | Corner (e.g. "top-left") | Type (rounded / chamfered) | Radius or chamfer size (mm) | How measured |
+|---|---|---|---|---|
+| | | | | traced / radius gauge / calipers |
+
 ## Material
 
 | Property | Value | How measured |
@@ -37,7 +47,10 @@ piece entirely).
 ## Bends
 
 One row per seam between two panels. Rows below match the guessed A/B/C/D
-panels above — add, remove, or relabel to match reality.
+panels above — add, remove, or relabel to match reality. Inside radius is
+the curved transition at the fold (you flagged bend-line fillets on this
+part) — radius gauge, or the sagitta trick (chord length `c` and midpoint
+height `h` off the curve, radius = `h/2 + c^2/(8h)`) if you don't have one.
 
 | Bend ID | Panels joined | Angle (deg) | Inside radius (mm) | Notes |
 |---|---|---|---|---|
