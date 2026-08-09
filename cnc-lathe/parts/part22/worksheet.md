@@ -24,8 +24,8 @@ piece entirely).
 | Letter | Description (e.g. "bottom", "left side wall") | Trace file | Notes |
 |---|---|---|---|
 | A | bottom of trough | | |
-| B | left side wall | | |
-| C | right side wall | | |
+| B | side wall — **not a plain rectangle**, confirmed 2026-08-09: a tapered/wedge panel — flat top flange (2 holes) → tapered wall, wider at top → flat bottom flange (2 holes), narrower than the top flange. `part22_sheetmetal.py` wrongly modeled this as a flat rectangle; needs a rebuild once this row has real numbers. | `part22_panelB_trace_paper.jpg` (tracing, photo not scan — see note below), `part22_panelB_trace_realpart.jpg`, `part22_panelB_trace_comparison.jpg` | Photo-est reading (pixel-measured off the mat's printed grid, NOT a 1:1 scan): top flange ~67mm wide x ~7-10mm tall; tapered wall ~66mm wide at top narrowing to ~54mm wide at bottom, ~30-35mm tall; bottom flange ~54mm wide x ~12-15mm tall. **Treat as rough scale only** — rescan at 1:1 (no "fit to page") for real geometry, per `../README.md`. |
+| C | other side wall — presumed mirror of B (tapered the same way) but not confirmed; could differ | | if C isn't a mirror of B, trace it separately rather than assuming |
 | D | raised end panel (tailstock-post mounting face) | | |
 
 **Trace the true outline** — you flagged rounded/chamfered panel corners on
@@ -65,6 +65,22 @@ height `h` off the curve, radius = `h/2 + c^2/(8h)`) if you don't have one.
 | Hole ID | Panel | Diameter (mm) | Position (ref. to a panel corner/edge) | Notes |
 |---|---|---|---|---|
 | 1 | A | | | |
+| 2 | B, top-left | | | round in photo |
+| 3 | B, top-right | | | round in photo |
+| 4 | B, bottom-left | | | photo suggests this one may not be round (square/hex?) — worth a close look, could be a carriage-bolt seat |
+| 5 | B, bottom-right | | | round in photo |
+
+## Fasteners (photo-est, pixel-measured off the mat's printed grid — real error margin, confirm with calipers)
+
+From `part22_fasteners_tailstock_1.jpg` / `_2.jpg`, described as the fasteners found at the tailstock end (presumably the ones through panel B/C and/or the bolts noted elsewhere in this worksheet — confirm which holes these actually belong to).
+
+| Item | Reading | Likely standard size |
+|---|---|---|
+| Bolt | shank ⌀ ≈ 5.5–5.8mm, length ≈ 86mm, head across-corners ≈ 15mm | Shank points to **M6**; head-corner reading points closer to M8 — these disagree, a caliper across the shank (not the head, which has more photo parallax error) settles it |
+| Washer 1 | OD ≈ 13.1mm, ID ≈ 6.6mm | bore consistent with M6 |
+| Washer 2 | OD ≈ 15.3mm, ID ≈ 6.5mm | bore consistent with M6 |
+| Ring 3 | OD ≈ 13.1mm, ID ≈ 6.8mm | possibly a split lock washer — couldn't tell from the photo whether it has a split, please confirm |
+| Nut | across-flats ≈ 14.5mm | noisy reading, roughly M8-ish AF — worth confirming against the bolt shank size directly (it should thread onto it) |
 
 ## Overall envelope (cross-check)
 
