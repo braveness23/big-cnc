@@ -13,67 +13,71 @@ folder). Both models here follow the diagram's leader line, not its label.
 | `worksheet.md` | Measurement worksheet — fill in as tracings/measurements come in. See `../README.md` for the capture protocol. |
 | `traces/` | Scanned/photographed panel tracings back the worksheet. |
 | `part22_bracket.py`, `.blend`, `.stl`, `_iso.png` | First attempt, done in Blender as a solid box-section bar — kept for history, superseded in spirit (not deleted) by the SheetMetal version once the reference photo made clear the part is folded sheet, not solid tube. |
-| `part22_sheetmetal.py` | Build script for the current SheetMetal-workbench reconstruction. Same dimension-table convention as `cad/lathe.py`. |
-| `part22_sheetmetal.FCStd` / `.step` | The FreeCAD document and STEP export. |
-| `part22_sheetmetal_iso.svg` / `.png` | Headless isometric preview (see `part22_sheetmetal_isosvg.py`). |
+| `part22_sheetmetal.py` | Second attempt: a rectangular open-top box (trough + folded end cap) — kept for history, now also believed to have the wrong *topology* (not just unmeasured dimensions), see Status below. |
+| `part22_sheetmetal.FCStd` / `.step` | The FreeCAD document and STEP export for that attempt. |
+| `part22_sheetmetal_iso.svg` / `.png` | Headless isometric preview for that attempt. |
+| `part22_panelB.py` | Current attempt: a single tapered-wedge panel (flat top flange → tapered web → flat, narrower bottom flange, folded flanges opposite senses), matching the 2026-08-09 tracing/photos of panel B. Same dimension-table + spreadsheet convention. |
+| `part22_panelB.FCStd` / `.step` | The FreeCAD document and STEP export for panel B. |
+| `part22_panelB_iso.svg` / `.png` | Headless isometric preview (see `part22_panelB_isosvg.py`). |
 
 ## Status: photo-est reconstruction, not yet measured
 
-`PXL_20260808_133251586.jpg` (in `../../`) shows part #22 in the flesh: a
-folded-sheet bracket (visible bend radius on the outer corners, constant
-wall thickness, a mitered seam where the end panel meets the side walls)
-that caps the tailstock end of the two bed rails and gives the tailstock
-upright (item 24) its mounting face. `part22_bracket.py`, the original
-Blender attempt, modeled it as a solid box-section bar and flagged its own
-uncertainty about this ("a hint of a second fold line ... suggesting it may
-actually be an open C-channel"). `part22_sheetmetal.py` resolves that by
-rebuilding it as an actual bent-sheet solid in FreeCAD: an open-top
-U-channel trough (the SheetMetal "base wall" feature, matching the rails'
-own folded-channel profile) closed at the far end by a wall folded up from
-all three open edges in one auto-mitered "Wall" (bend) feature, with two
-bolt holes cut through the raised end face.
+Three attempts so far, in order, each superseding the last in *shape*
+understanding, not just dimensions — none deleted, all kept for history:
 
-**Not a measured part** — pixel-scaled off the M8 bolt heads visible in the
-photo and quantized to clean numbers, see the dimension table at the top of
-`part22_sheetmetal.py` for the source tag on every number (`photo-est` vs
-`assumption`). The third fastener visible low in the trough in the photo
-(probably item 48) wasn't modeled; its geometry wasn't legible enough to
-reconstruct with any confidence. `worksheet.md` in this folder is where real
-measurements/tracings go once captured — once it's filled in, the plan is to
-rebuild `part22_sheetmetal.py` panel-by-panel from traced sketch geometry
-and measured bend angles/radii, retagging the dimension table `"measured"`.
+1. **`part22_bracket.py`** (Blender): a solid box-section bar. Flagged its
+   own uncertainty about this ("a hint of a second fold line ... suggesting
+   it may actually be an open C-channel").
+2. **`part22_sheetmetal.py`** (FreeCAD): a rectangular open-top box —
+   U-channel trough closed at the far end by a folded, mitered end cap —
+   built from a single angled, unscaled reference photo
+   (`PXL_20260808_133251586.jpg`). Answered "is this sheet metal" (yes) but
+   the box *topology* is now believed wrong too, not just its numbers —
+   see next point.
+3. **`part22_panelB.py`** (current): a single tapered-wedge panel — flat
+   top flange (2 holes) → tapered web, wider at top → flat, narrower bottom
+   flange (2 holes), the two flanges folded to opposite sides. This is what
+   the 2026-08-09 tracing + photos of the real part (`worksheet.md`,
+   `traces/part22_panelB_trace_*.jpg`) actually show — nothing like
+   `part22_sheetmetal.py`'s flat rectangular side wall. Render now visibly
+   resembles the photographed part (a stepped/"Z" bracket), unlike the box.
 
-**Known wrong, not yet fixed**: the 2026-08-09 tracing + photos of panel B
-(one of the two side walls, see `worksheet.md` and `traces/`) showed it
-isn't the flat rectangle this script currently models — it's a tapered
-wedge (flat top flange with 2 holes → tapered wall → flat, narrower bottom
-flange with 2 holes). The script still builds the old flat-wall guess;
-rebuilding panel B to match is blocked on real dimensions (a photo-est
-reading is in the worksheet, but per the whole point of the tracing
-workflow, that's not good enough to rebuild the model from — needs an
-actual 1:1 scan or calipers).
+**Still not a measured part** — every number in `part22_panelB.py` is the
+photo-est reading logged in `worksheet.md` (pixel-measured off the mat's
+printed grid in the tracing photos, calibrated properly this time via a
+real ruler, but still a photo reading, not a 1:1 scan or calipers). Treat
+this as "does the silhouette now look right," not "ready to cut metal from"
+— see the caveats in `part22_panelB.py`'s own docstring (fold direction,
+hole positions, and whether panel C mirrors panel B are all unconfirmed).
+The M8 hole size carried over from `part22_sheetmetal.py` is also in
+question — the fastener photos in `traces/` read closer to M6. Once
+caliper-measured data comes in (calipers now in the photo rotation per
+2026-08-09), the plan is to rebuild panel-by-panel from traced sketch
+geometry and measured bend angles/radii, retagging the dimension table
+`"measured"`.
 
 ## Parametric / tunable dimensions
 
-Every dimension lives in the `Dimensions` spreadsheet inside
-`part22_sheetmetal.FCStd` — name, value, source tag, and note, one row
-each — not just as Python constants in the build script. The trough
-sketch's width/height and the SheetMetal wall/bend features' thickness,
-radius, and length are expression-bound to those cells (e.g. a sketch
-constraint's expression is literally `Dimensions.box_width`), so the normal
-tuning loop is: open the `.FCStd` in the FreeCAD GUI, double-click the
-`Dimensions` spreadsheet, edit a cell, recompute — no Python, no re-running
-the script, and the trough + end-lip shape updates live.
+Both `part22_sheetmetal.py` and `part22_panelB.py` follow the same
+convention: every dimension lives in a `Dimensions` spreadsheet inside the
+respective `.FCStd` — name, value, source tag, and note, one row each — not
+just as Python constants in the build script. The sketch geometry (fully
+constrained, not just placed at starting coordinates) and the SheetMetal
+wall/bend features' thickness/radius/length are expression-bound to those
+cells (e.g. a sketch constraint's expression is literally
+`Dimensions.box_width`, or `Dimensions.top_width` in panel B's case), so the
+normal tuning loop is: open the `.FCStd` in the FreeCAD GUI, double-click
+the `Dimensions` spreadsheet, edit a cell, recompute — no Python, no
+re-running the script, and the shape updates live.
 
-The one part of the model that **isn't** live this way is the two bolt
-holes: they're cut with a raw shape boolean, not a parametric `Part::Cut`
-(see "Known quirk" below), so a bare GUI recompute won't move them. Editing
-`hole_x`/`hole_y`/`hole_d` in the spreadsheet and then re-running
-`freecadcmd part22_sheetmetal.py` (which reads the same cells) does. The
-script also sanity-checks after cutting that the holes actually removed the
-expected volume of material, and raises an error instead of silently
-shipping uncut holes if a big enough width/height change moved `hole_x`/
-`hole_y` off the raised end face.
+The one part of each model that **isn't** live this way is the bolt holes:
+they're cut with a raw shape boolean, not a parametric `Part::Cut` (see
+"Known quirk" below), so a bare GUI recompute won't move them. Editing the
+hole-position cells in the spreadsheet and then re-running the script
+(which reads the same cells) does. Both scripts sanity-check after cutting
+that each hole actually removed the expected volume of material, and raise
+an error instead of silently shipping an uncut hole if a big enough
+dimension change moved one off solid material.
 
 ## Sheet metal workbench
 
@@ -107,17 +111,23 @@ naming metadata) has the identical problem, while a shape built from
 some BRep property of SheetMetal's generated geometry (probably from the
 `multiFuse` of offset faces `smBase()` uses internally) that this build's
 `Part::Cut` recompute path chokes on — not chased further than that.
-`part22_sheetmetal.py`'s bolt holes are cut with the direct-geometry form
-for this reason (see the comment at that point in the script) — correct,
-just not parametric the way a `Part::Cut` tree node would be. Worth
-re-testing if this is ever rebuilt against a different FreeCAD/OCCT build.
+Both scripts' bolt holes are cut with the direct-geometry form for this
+reason (see the comment at that point in each script) — correct, just not
+parametric the way a `Part::Cut` tree node would be. Worth re-testing if
+this is ever rebuilt against a different FreeCAD/OCCT build.
 
 ## Rebuild
 
 ```bash
-freecadcmd part22_sheetmetal.py         # writes .FCStd + .step, prints the dimension table
-freecadcmd part22_sheetmetal_isosvg.py  # writes part22_sheetmetal_iso.svg
+# panel B (current best shape)
+freecadcmd part22_panelB.py         # writes .FCStd + .step, prints the dimension table
+freecadcmd part22_panelB_isosvg.py  # writes part22_panelB_iso.svg
+rsvg-convert -b white part22_panelB_iso.svg -o part22_panelB_iso.png
+
+# the older box attempt, kept for history
+freecadcmd part22_sheetmetal.py
+freecadcmd part22_sheetmetal_isosvg.py
 rsvg-convert -b white part22_sheetmetal_iso.svg -o part22_sheetmetal_iso.png
 ```
 
-(run from this directory; both scripts resolve paths relative to themselves)
+(run from this directory; all scripts resolve paths relative to themselves)
