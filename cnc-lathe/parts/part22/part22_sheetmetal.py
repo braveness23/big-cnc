@@ -15,7 +15,7 @@ end panel meets the side walls. The Blender version's docstring flagged this
 ambiguity ("a hint of a second fold line ... suggesting it may actually be an
 open C-channel") and punted on it. This pass resolves it by rebuilding the
 part in FreeCAD using the community SheetMetal workbench (not bundled with
-FreeCAD -- see cad/README.md for how it was installed), so the model is an
+FreeCAD -- see README.md, in this folder, for how it was installed), so the model is an
 actual bent-sheet solid (parametric thickness + bend radius), not a solid
 block standing in for one.
 
@@ -36,14 +36,15 @@ photo (13mm across flats), same method as part22_bracket.py. Quantized to
 clean stock/sheet sizes after that. Treat every number below as photo-est,
 not measured.
 
-Run headless:  freecadcmd cad/part22_sheetmetal.py
-Outputs:       cad/part22_sheetmetal.FCStd, cad/part22_sheetmetal.step
-Then:          freecadcmd cad/part22_sheetmetal_isosvg.py
-               (writes cad/part22_sheetmetal_iso.svg from the .FCStd; convert
-               to PNG the same way as cad/README.md documents for lathe_iso)
+Run headless (from this directory):  freecadcmd part22_sheetmetal.py
+Outputs:       part22_sheetmetal.FCStd, part22_sheetmetal.step
+Then:          freecadcmd part22_sheetmetal_isosvg.py
+               (writes part22_sheetmetal_iso.svg from the .FCStd; convert to
+               PNG the same way as cad/README.md documents for lathe_iso,
+               one level up, for the whole-machine model)
 
 Coordinate system (local to this part, not tied to lathe.py's bed datum --
-this file was built standalone, see cad/README.md):
+this file was built standalone, see README.md in this folder):
   x = across the bed (box width, spans both rails' bolt centers)
   y = vertical, up from the trough floor
   z = along the bed / the rails' length axis. 0 = open end (rails enter);
@@ -60,7 +61,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # Prefer the addon manager's install location; fall back to a path next to
 # this file for environments (like the one this was first built in) that
 # don't have the FreeCAD Addon Manager available to install it the normal
-# way. See cad/README.md, "Sheet metal workbench".
+# way. See README.md in this folder, "Sheet metal workbench".
 try:
     import SheetMetalBaseCmd
     import SheetMetalCmd
@@ -78,7 +79,7 @@ def dim(key, value, source, note=""):
 
 
 # =====================================================================
-# SOURCE-TAGGED DIMENSION TABLE (see part22_bracket.py / cad/README.md for
+# SOURCE-TAGGED DIMENSION TABLE (see part22_bracket.py / README.md (this folder) for
 # the legend this reuses: photo-est = pixel-proportioned off the M8 bolt
 # heads with no other scale reference; assumption = a modeling choice with
 # no photo evidence either way, chosen for plausibility, not measured).
@@ -99,7 +100,7 @@ BEND_RADIUS = dim("bend_radius", 3.0, "assumption", "~1x thickness, typical pres
 HOLE_D = dim("hole_d", 8.5, "photo-est", "M8 clearance, matches part22_bracket.py's bolts 47/53")
 HOLE_X = dim("hole_x", 25.0, "assumption",
              "bolt spacing off-center on the end face; kept close to centerline so both "
-             "holes land clear of the mitered corner seams (see cad/README.md)")
+             "holes land clear of the mitered corner seams (see README.md, this folder)")
 HOLE_Y = dim("hole_y", 25.0, "assumption", "bolt height on the raised end face, same reason")
 
 print("=" * 70)
@@ -181,7 +182,7 @@ if len(endcap.Shape.Solids) != 1:
 # NOTE: built as a raw Part.Shape boolean (not a parametric Part::Cut
 # document object) -- in this build (FreeCAD 1.1.3 / OCCT 7.9.3 from
 # conda-forge, the only install path available in the sandbox this was
-# first built in, see cad/README.md), Part::Cut against a SheetMetal
+# first built in, see README.md in this folder), Part::Cut against a SheetMetal
 # Part::FeaturePython Base silently no-ops (recomputes without error, but
 # removes no material) even though the identical boolean succeeds when
 # called directly on the shape geometry. Filed as a local environment quirk,

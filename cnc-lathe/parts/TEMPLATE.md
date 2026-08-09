@@ -1,9 +1,11 @@
 # Measurement worksheet — part #___
 
-Copy this file to `measurements/part<N>/worksheet.md` and fill in. See
-`measurements/README.md` for the tracing/measuring technique. Leave a cell
-blank rather than guessing — blank means "not captured yet," a guess here
-defeats the point of measuring.
+Copy this file to `parts/<N>/worksheet.md` and fill in (see `README.md` in
+this directory for the full per-part folder layout: `traces/`, build
+scripts, FreeCAD documents, etc. all live alongside it). See `README.md`
+also for the tracing/measuring technique. Leave a cell blank rather than
+guessing — blank means "not captured yet," a guess here defeats the point
+of measuring.
 
 - **Part / exploded-view item #**:
 - **Date measured**:

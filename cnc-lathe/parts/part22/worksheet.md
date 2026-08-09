@@ -5,7 +5,7 @@ rather than guessing — blank means "not captured yet," a guess here defeats
 the point of measuring.
 
 - **Part / exploded-view item #**: 22 (bracket beside the tailstock upright;
-  see `cnc-lathe/cad/part22_sheetmetal.py`'s docstring for why it's *not*
+  see `part22_sheetmetal.py`'s docstring, in this folder, for why it's *not*
   the "Headstock" the manual's own parts list calls it)
 - **Date measured**:
 - **Measured by**:

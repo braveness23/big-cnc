@@ -1,7 +1,7 @@
 """Headless shaded-isometric SVG for part22_sheetmetal.FCStd. Same painter's-
 algorithm approach as _isosvg.py (see that file's docstring for why: no
 working offscreen GL context to saveImage() with). Run:
-  freecadcmd cad/part22_sheetmetal_isosvg.py
+  freecadcmd part22_sheetmetal_isosvg.py (from this directory)
 """
 import os
 import math

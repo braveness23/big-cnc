@@ -1,8 +1,36 @@
-# Measurement capture protocol (paper tracing)
+# parts/ — per-part reverse-engineering folders
+
+Every individual part being reconstructed from the exploded-view diagram
+gets one folder here, named after its exploded-view item number (e.g.
+`part22/`). That folder holds *everything* for that part in one place:
+measurement worksheet, scanned tracings, CAD build script(s), the FreeCAD
+document, exports, renders, and notes — so there's one place to look, not
+scattered across a `cad/` folder (build scripts) and a separate
+`manual/measurements/` folder (worksheets) the way an earlier pass did it.
+`cad/` (one level up) stays reserved for the whole-machine assembly model
+(`lathe.py`/`lathe.FCStd`), which isn't part-specific.
+
+## Folder contents (per part)
+
+- `README.md` — part-specific build notes: what the part is, what's been
+  tried, open questions, install/rebuild instructions for anything unusual
+  that script needed. Optional for a part with nothing unusual to say.
+- `worksheet.md` — the fillable measurement record (copy `TEMPLATE.md` from
+  this directory to start a new one).
+- `traces/` — scanned/photographed tracings, one file per panel, named
+  `<part>_panel<Letter>_trace.<ext>` (e.g. `part22_panelA_trace.png`).
+- `<part>_*.py` — build script(s). May be more than one if a part went
+  through multiple reconstruction attempts (kept, not deleted, for history
+  — see `part22/README.md` for an example: an earlier Blender-based attempt
+  sits alongside the current FreeCAD SheetMetal one).
+- `<part>_*.FCStd` / `.step` / `_iso.svg` / `_iso.png` — the FreeCAD
+  document, STEP export, and rendered preview for each build script above.
+
+## How a part gets measured (paper tracing protocol)
 
 How to capture a sheet-metal part accurately enough to model in FreeCAD,
 instead of guessing dimensions off angled reference photos (see
-`cnc-lathe/cad/README.md`'s part #22 writeup for why that failed: no scale
+`part22/README.md` for why that failed on the first attempt: no scale
 reference, perspective distortion, and bend angles are basically
 un-recoverable from a single photo). Ranked by how directly each method
 gives a *number* rather than something to interpret:
@@ -20,18 +48,7 @@ gives a *number* rather than something to interpret:
 4. **Angled context photos** — identification and a sanity check against the
    assembled model only. Never used for a dimension.
 
-## Per-part folder
-
-Each part gets its own folder here, named after its exploded-view item
-number, e.g. `part22/`. Inside:
-
-- `worksheet.md` — the fillable measurement record (copy `TEMPLATE.md` from
-  this directory to start a new one).
-- `<part>_panel<Letter>_trace.<ext>` — the scanned/photographed tracing for
-  each panel (e.g. `part22_panelA_trace.png`).
-- Any supporting context photos, named descriptively.
-
-## Tracing technique
+### Tracing technique
 
 1. **Letter each panel** on the part itself (tape or marker: A, B, C…) —
    the worksheet and file names refer back to these letters, so pick them
@@ -69,7 +86,7 @@ number, e.g. `part22/`. Inside:
 
 Scanned/measured values go into the model's dimension table tagged
 `"measured"` (see the source-tag convention already used in `cad/lathe.py`
-and `cad/part22_sheetmetal.py`), replacing the old `"photo-est"` /
+and `part22/part22_sheetmetal.py`), replacing the old `"photo-est"` /
 `"assumption"` tags. Each scan gets imported into a FreeCAD Sketcher
 background image and traced directly, so panel geometry comes from your
 tracing, not from re-estimating it.
