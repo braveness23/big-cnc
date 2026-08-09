@@ -43,6 +43,38 @@ measurements/tracings go once captured — once it's filled in, the plan is to
 rebuild `part22_sheetmetal.py` panel-by-panel from traced sketch geometry
 and measured bend angles/radii, retagging the dimension table `"measured"`.
 
+**Known wrong, not yet fixed**: the 2026-08-09 tracing + photos of panel B
+(one of the two side walls, see `worksheet.md` and `traces/`) showed it
+isn't the flat rectangle this script currently models — it's a tapered
+wedge (flat top flange with 2 holes → tapered wall → flat, narrower bottom
+flange with 2 holes). The script still builds the old flat-wall guess;
+rebuilding panel B to match is blocked on real dimensions (a photo-est
+reading is in the worksheet, but per the whole point of the tracing
+workflow, that's not good enough to rebuild the model from — needs an
+actual 1:1 scan or calipers).
+
+## Parametric / tunable dimensions
+
+Every dimension lives in the `Dimensions` spreadsheet inside
+`part22_sheetmetal.FCStd` — name, value, source tag, and note, one row
+each — not just as Python constants in the build script. The trough
+sketch's width/height and the SheetMetal wall/bend features' thickness,
+radius, and length are expression-bound to those cells (e.g. a sketch
+constraint's expression is literally `Dimensions.box_width`), so the normal
+tuning loop is: open the `.FCStd` in the FreeCAD GUI, double-click the
+`Dimensions` spreadsheet, edit a cell, recompute — no Python, no re-running
+the script, and the trough + end-lip shape updates live.
+
+The one part of the model that **isn't** live this way is the two bolt
+holes: they're cut with a raw shape boolean, not a parametric `Part::Cut`
+(see "Known quirk" below), so a bare GUI recompute won't move them. Editing
+`hole_x`/`hole_y`/`hole_d` in the spreadsheet and then re-running
+`freecadcmd part22_sheetmetal.py` (which reads the same cells) does. The
+script also sanity-checks after cutting that the holes actually removed the
+expected volume of material, and raises an error instead of silently
+shipping uncut holes if a big enough width/height change moved `hole_x`/
+`hole_y` off the raised end face.
+
 ## Sheet metal workbench
 
 FreeCAD's own install does *not* bundle a sheet-metal workbench — the one
@@ -63,14 +95,22 @@ available, prefer it; this is a fallback path, documented here so the next
 person doesn't have to rediscover it.
 
 **Known quirk in that conda-forge build**: `Part::Cut` (the parametric
-boolean feature) silently no-ops against a SheetMetal `Part::FeaturePython`
-Base — it recomputes without error but removes no material, even though the
-identical boolean succeeds when called directly on the shape geometry
-(`shape.cut(tool)`). `part22_sheetmetal.py`'s bolt holes are cut with the
-direct-geometry form for this reason (see the comment at that point in the
-script) — not parametric the way a `Part::Cut` tree node would be, but
-correct. Not chased further; worth re-testing if this is ever rebuilt against
-a different FreeCAD/OCCT build.
+boolean feature) silently no-ops against this part's shape — it recomputes
+without error but removes no material, even though the identical boolean
+succeeds when called directly on the shape geometry (`shape.cut(tool)`).
+Confirmed it isn't specific to SheetMetal's `Part::FeaturePython` objects: a
+plain `Part::Feature` built from the exact same shape (via `.Shape =
+sheetMetalObj.Shape.copy()`, with or without stripping the element map, and
+even round-tripped through a raw BREP export/import to rule out topological-
+naming metadata) has the identical problem, while a shape built from
+`Part.makeBox()` cuts fine through `Part::Cut` in the same session. So it's
+some BRep property of SheetMetal's generated geometry (probably from the
+`multiFuse` of offset faces `smBase()` uses internally) that this build's
+`Part::Cut` recompute path chokes on — not chased further than that.
+`part22_sheetmetal.py`'s bolt holes are cut with the direct-geometry form
+for this reason (see the comment at that point in the script) — correct,
+just not parametric the way a `Part::Cut` tree node would be. Worth
+re-testing if this is ever rebuilt against a different FreeCAD/OCCT build.
 
 ## Rebuild
 
