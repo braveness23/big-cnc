@@ -101,11 +101,16 @@ RAIL_TOP_TO_SPINDLE_AXIS = dim(
     "rail_top_to_spindle_axis", SWING_OVER_BED / 2.0, "DERIVED",
     "swing over bed / 2 -- spindle centerline height above bed-rail top")
 
-# ---- bed rails: highest-priority unknowns, see measurement list ----
-RAIL_HEIGHT = dim("rail_height", 1.5, "photo-est", "channel height, end-on photo, no scale ref")
-RAIL_TOP_WIDTH = dim("rail_top_width", 2.0, "photo-est", "channel top flange width")
-RAIL_WALL_T = dim("rail_wall_thickness", 0.1875, "photo-est", "assumed 3/16\" sheet steel")
+# ---- bed rails: manual parts-list item #1, square steel tube (measured 2026-08-10) ----
+RAIL_HEIGHT = dim("rail_height", 38.0 / IN, "measured-2026-08-10", "square tube, 38mm side")
+RAIL_TOP_WIDTH = dim("rail_top_width", 38.0 / IN, "measured-2026-08-10", "square tube, 38mm side")
+RAIL_WALL_T = dim("rail_wall_thickness", 1.92 / IN, "measured-2026-08-10", "1.92mm wall")
 RAIL_GAP = dim("rail_inner_gap", 5.5, "photo-est", "clear width between the two rails' inner faces")
+RAIL_STOCK_LENGTH = dim(
+    "rail_stock_length", 46.375, "measured-2026-08-10",
+    "physical square-tube stock length (part #1), 46-3/8\" = 1177.925mm. Distinct "
+    "from bed_rail_run_x below (an envelope-fitted value, not the raw stock length "
+    "-- the tube likely runs partly under the headstock/tailstock castings).")
 BED_RAIL_RUN_X = dim(
     "bed_rail_run_x", 41.0, "DERIVED",
     "chosen so headstock_depth + this + tailstock_depth == overall_length "

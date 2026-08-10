@@ -72,6 +72,11 @@ FOOT_W = 30
 FOOT_H = 15
 HOLE_D = 8.5   # M8 clearance
 
+# measured-2026-08-10: stock is 2mm sheet steel, not solid bar. Geometry
+# below still models a solid box (see module docstring's C-channel-vs-tube
+# caveat) -- this constant is recorded but NOT YET applied to the mesh.
+WALL_THICKNESS = 2.0
+
 # main body: box tube running along X
 body = cube("Body", BODY_L, BODY_W, BODY_H, loc=(0, 0, 0))
 
@@ -82,10 +87,12 @@ foot = cube("Foot", FOOT_L, FOOT_W, FOOT_H,
 boolean(body, foot, 'UNION')
 
 # hole for bolt 47 (far end, through the top face)
+# full fastener spec (length/grade/head size): see hardware_specs.PART_47_BOLT
 h1 = cyl("Hole47", HOLE_D / 2, BODY_H * 2, loc=(BODY_L / 2 - 20, 0, 0))
 boolean(body, h1, 'DIFFERENCE')
 
 # hole for bolt 48 (near end, through the foot tab)
+# full fastener spec (length/grade/head size): see hardware_specs.PART_48_BOLT
 h2 = cyl("Hole48", HOLE_D / 2, FOOT_H * 2, loc=(-(BODY_L / 2 - FOOT_L / 2), 0, -(BODY_H / 2 + FOOT_H / 2)))
 boolean(body, h2, 'DIFFERENCE')
 
