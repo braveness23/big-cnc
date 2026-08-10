@@ -19,6 +19,12 @@ estimated" below before trusting any specific number.
 | `lathe_iso.svg` / `lathe_iso.png` | Shaded isometric preview, rendered headlessly from the model geometry. |
 | `_isosvg.py` | Helper that renders `lathe_iso.svg` from `lathe.FCStd` (adapted from `basement-remodel/cad/_isosvg.py`). |
 
+Individual parts being reverse-engineered off the exploded-view diagram
+(rather than the whole-machine rough-out above) live in `../parts/`, one
+folder per exploded-view item number — e.g. `../parts/part22/` for the
+tailstock-end bracket. See `../parts/README.md` for that convention and the
+measurement/tracing protocol used to build them accurately.
+
 ## Rebuild
 
 ```bash

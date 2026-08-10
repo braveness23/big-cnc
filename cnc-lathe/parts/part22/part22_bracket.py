@@ -17,9 +17,9 @@ Simplification: modeled as a solid box-section bar. The drawing shows a hint
 of a second fold line near the top (suggesting it may actually be an open
 C-channel, not solid tube) that this pass did not attempt to resolve.
 
-Run headless:  blender --background --python cad/part22_bracket.py
-Outputs:       cad/part22_bracket.blend, cad/part22_bracket.stl,
-               cad/part22_bracket_iso.png (render, for comparison against the
+Run headless:  blender --background --python part22_bracket.py (from this directory)
+Outputs:       part22_bracket.blend, part22_bracket.stl,
+               part22_bracket_iso.png (render, for comparison against the
                exploded-view crop it was built from)
 """
 import os
