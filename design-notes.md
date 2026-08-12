@@ -188,3 +188,38 @@ First real capture-protocol data: fastener photos and a paper tracing of one of 
 - **Still photo-est, not measured** — same caveat as always, now compounded: fold direction/angle, exact hole positions, and whether the other side wall (panel C) mirrors panel B are all unconfirmed guesses layered on top of a photo reading. Explicitly a "does the silhouette look right now" pass, not a build-ready model.
 - Both `part22_sheetmetal.py` and the new `part22_panelB.py` were rebuilt to be spreadsheet-parametric per Dave's request: every dimension lives in a `Dimensions` spreadsheet inside the `.FCStd` (name/value/source/note), with the sketch and SheetMetal wall/bend features expression-bound to those cells — open the file in the FreeCAD GUI, edit a cell, recompute, no Python required. Verified by round-trip test (reopen saved file, edit a cell, recompute, geometry updates). The one exception is bolt holes, still a raw shape boolean due to the `Part::Cut` quirk already logged in `cnc-lathe/parts/part22/README.md` — now confirmed not SheetMetal-specific (a plain `Part::Feature` built from the same shape has the identical problem).
 - Dave will start including calipers in future part photos, which should resolve the standing M6-vs-M8 ambiguity on the tailstock-end hardware (the bolt shank read closer to M6, the head reading closer to M8 — the two disagreed, likely photo parallax on the raised head).
+
+## 2026-08-12 — IMU on big-cnc: where a 9-axis AHRS actually helps (NOT a decision — exploratory, nothing purchased or confirmed on hand)
+
+Candidate part named in discussion: **WHEELTEC / FDI Systems N100**, a 9-axis ROS IMU (MEMS gyro + accel + magnetometer with onboard fusion, USB/UART out, ROS driver). This entry is a capability triage of that sensor class against this machine — no hardware decision, no commitment to add sensing to the build.
+
+This is a big-cnc entry, not a `cnc-lathe` one. The lathe's open sensing gap is a **spindle encoder for C-axis/indexing** (see the 2026-08-09 entry) — an IMU does not address that and is not a substitute for it.
+
+**Framing**: an AHRS measures *angles and dynamics*, not position. Sorting candidate uses by how well the instrument matches the job is more useful than listing them flat, so they're split three ways below.
+
+### Good instrument match
+
+- **Bed pivot angle** — the strongest fit, and the reason the sensor is interesting here at all. The pivoting bed is the one member on this machine whose *absolute* angle matters, and gravity gives a drift-free reference for exactly that. Three levels of use, in build order: live angle readout while the pivot is still manually cranked (the current plan per 2026-07-19); closed-loop angle feedback once the pivot actuator is motorized (commanding an angle instead of eyeballing it); and a safety interlock — refuse X/Y motion unless the bed reads within tolerance of a known detent, refuse to pivot unless the carriage is parked.
+- **Truck-base tipping / caster lift-off during a pivot** — the rough sizing estimate already flags the cantilevered tipping moment on the base as the thing easiest to underestimate. A second unit (or the same one relocated) on the base frame should read flat at ~0° through the entire swing; any deviation means the stance is losing it. A real safety layer tied to an already-documented structural concern.
+- **Pivot binding / stiction detection** — measured angular rate vs. commanded rate during the swing. Bearing bind, a fouled cable, or a clamp catching shows up as rate collapse or stick-slip chatter before it's audible. Comfortable at AHRS output rates.
+- **Crash / shock detection → feed-hold** — accel magnitude over threshold catches a plunge into a clamp, a tool break, or a gantry collision. 100 Hz is plenty.
+- **Setup leveling after relocation** — this is a machine on lifting casters that will get moved around the shop, so leveling is a *repeated* task. Coarse-but-instant live two-axis readout while setting the casters beats fetching a level.
+
+### Conditional — hinges on one unanswered datasheet question
+
+- **Vibration / chatter / move-settling measurement** — viable only if raw, unfiltered IMU data is available at a usable output rate. The fused AHRS stream is internally low-passed for orientation and is **not** a substitute for a dedicated accelerometer. Open question: the N100's raw-mode ODR.
+  - Gantry structural modes (~10–60 Hz) fit under a 100 Hz ODR — so ringing/settling measurement for empirically tuning accel and jerk limits is plausible.
+  - Spindle tooth-passing frequency at router RPM is in the hundreds of Hz — does *not* fit; true chatter and spindle-imbalance work is out of reach.
+  - Either way an ADXL345-class part sampled fast is the correct, ~$10 tool for resonance work. Not a reason to buy an AHRS.
+
+### Ruled out — sounds right, doesn't work
+
+- **Position by integrating acceleration** — double integration drifts to meters within seconds. There is no version of this that helps a CNC; position comes from encoders or nothing.
+- **Rail straightness / gantry flatness by tilt integration** — right technique, wrong instrument. Static roll/pitch accuracy in this class is a couple tenths of a degree, orders of magnitude coarser than a 2.4 m span needs. A machinist's level, or the LiDAR head already scoped in the 2026-07-22 entry, is the tool for machine self-calibration.
+- **Tramming the spindle** — a dial indicator sweep beats it badly and costs nothing.
+- **The magnetometer, and therefore fused yaw** — a welded steel frame plus steppers, a VFD, and the candidate plasma cutter makes magnetic heading unusable. Practical consequence: use roll/pitch only and disable mag fusion, or yaw wanders and poisons everything downstream of the quaternion. Worth noting that this makes the "9-axis" part of the spec largely irrelevant on this machine.
+- **Dual-rail gantry racking detection** — casualty of the above: racking is a yaw-axis measurement, and the magnitudes involved sit below the noise floor regardless.
+
+### Integration note
+
+USB/UART with a ROS driver puts this on the **host/Pi side as a supervisor**, not inside grblHAL's realtime loop (firmware decision unchanged — see 2026-08-06). Coupling back to motion control would be a digital OK/fault line into the controller (feed-hold or e-stop input) plus whatever the UI shows. That places it alongside the LiDAR/camera/AI-vision stack already scoped as host-side, rather than as a motion-control component.
