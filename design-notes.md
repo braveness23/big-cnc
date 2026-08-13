@@ -223,3 +223,42 @@ This is a big-cnc entry, not a `cnc-lathe` one. The lathe's open sensing gap is 
 ### Integration note
 
 USB/UART with a ROS driver puts this on the **host/Pi side as a supervisor**, not inside grblHAL's realtime loop (firmware decision unchanged — see 2026-08-06). Coupling back to motion control would be a digital OK/fault line into the controller (feed-hold or e-stop input) plus whatever the UI shows. That places it alongside the LiDAR/camera/AI-vision stack already scoped as host-side, rather than as a motion-control component.
+
+## 2026-08-12 — Sensor fusion reframe: priors, not precision (Dave's correction)
+
+Course correction on how the sensing stack gets evaluated. The preceding entries kept asking "is sensor X sufficient on its own" and finding each one wanting. Dave's point: no single sensor was ever supposed to be sufficient, and none is worth much processing power alone — the whole premise of the multi-channel stack (2026-07-22) is what happens when they're **combined**. The question that actually matters is whether several rough, overlaid estimates can be handed to an AI that recognizes what it's looking at and reverse-engineers it into a model.
+
+Answer: yes — but the mechanism is **priors**, not averaging.
+
+### Fusion for precision vs. recognition
+
+- **Fusion buys precision only for independent random error.** Five sensors that each sample at 5 mm still don't resolve a 3 mm bend radius. That limit is real and no amount of overlay fixes it. This is why the per-sensor triage kept coming up short.
+- **Recognition is a different move entirely.** Don't *measure* the bend radius — recognize that the part is press-braked sheet steel, and press brakes produce a small discrete set of radii. The coarse data then no longer has to resolve the feature; it only has to **discriminate between candidates**. That's a far lower-bandwidth job, and mediocre sensors are good at it.
+- Manufactured parts live in a tiny discrete subspace: 14ga vs 16ga, M6 vs M8, bend radius ≈ material thickness, stock tube sizes, right angles, symmetry, hole spacing on round numbers. Coarse observation + that catalog yields exact numbers.
+
+**This method is already in the repo, done by hand.** Part #22 was scaled off the M8 bolt heads in the photo. `lathe.py`'s dimension table pulls 6201/6203/6204 bearing bore/OD/width, MT2 taper geometry, and the 3/4"-10 UNC spindle nose thread from published standards after identifying them in the parts list — the 2026-08-09 entry explicitly notes several "unknown" dimensions turned out to be *derivable from standards instead of guessed*. The proposal here is to automate exactly that, not to invent something new.
+
+### Architecture, and why it isn't token-expensive
+
+The AI never touches the point cloud — that's the expensive, naive version. Three stages:
+
+1. **Code** (numpy/scipy) reduces every sensor channel to a compact feature summary — e.g. *3 planar faces, dihedral 89.7°/90.4°, wall 1.9 ±0.3 mm, 4 holes Ø8.2 ±0.4 at these coords, envelope 120×45×30*. Hundreds of bytes.
+2. **AI** reasons over that summary plus the parts list and manual — text-sized, a few thousand tokens. Emits a hypothesis (*formed sheet steel, 14ga = 1.897 mm, bend radius ≈ t, M8 hardware*) and writes the parametric build script.
+3. **Code** rebuilds the model and compares it back against the raw observation. Good residual → done. Bad residual → hypothesis rejected, next candidate.
+
+Geometry stays in code; the AI supplies classification and priors. That division is what keeps the cost sane.
+
+### Why this is inference and not guessing
+
+Stage 3 is the part that matters: the model has to **predict the observation**. If 14ga reproduces the traced silhouette and 16ga doesn't, that's discrimination with a stated reason, not a guess.
+
+- **(Proposed, not yet in use)** the source-tag vocabulary needs a value for this, alongside `measured` / `photo-est` / `assumption` — something like **`inferred-standard`**: *identified as 14ga sheet, dimension from spec, discriminated against 16ga by silhouette residual 0.3 mm vs 1.1 mm.* Provenance plus the evidence that selected it.
+
+### Where priors don't help
+
+Priors need a catalog. A hand-carved corbel doesn't have one — no standard sizes, no discrete candidates, nothing to snap to. There, resolution is the whole game.
+
+So the split is clean, and it settles the open thread from the sensor-resolution discussion earlier the same day:
+
+- **Priors carry the manufactured work** — the lathe, brackets, fasteners, tube stock. Coarse sensing is adequate because the answer space is discrete.
+- **Resolution carries the organic work** — the molding profiles and corbels of the flagship restoration use case (2026-07-22). No catalog to lean on, so the scanner has to actually resolve the geometry.
