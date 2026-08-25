@@ -262,3 +262,30 @@ So the split is clean, and it settles the open thread from the sensor-resolution
 
 - **Priors carry the manufactured work** — the lathe, brackets, fasteners, tube stock. Coarse sensing is adequate because the answer space is discrete.
 - **Resolution carries the organic work** — the molding profiles and corbels of the flagship restoration use case (2026-07-22). No catalog to lean on, so the scanner has to actually resolve the geometry.
+
+## 2026-08-25 — Parts handed off to Argus
+
+A handful of on-hand electronics from the 2026-08-06 inventory have been
+claimed by **Argus** (Dave's multi-sensor gimbal data-capture project —
+`Projects/Argus` in Greymatter, no public repo yet) rather than sitting
+unassigned:
+
+- **Arduino Uno + CNC Shield, with its 4× A4988 driver modules** — already
+  ruled out for big-cnc's own use (2026-08-06 entry, firm decision), and a
+  near-perfect fit for Argus's pan/tilt controller as-is: same A4988 driver
+  family the gimbal's mechanical design assumes, already wired, no
+  prototyping needed. Will be reflashed away from GRBL — a G-code motion
+  planner is the wrong shape for a pose-sequencer/trigger controller.
+- **2 of the 5 NEMA17 steppers** — a matched unlabeled pair, so Argus's pan
+  and tilt axes behave symmetrically. Leaves 3 (the labeled Wantai
+  42BYGH610, the labeled 17HS08-1004S3, and one unlabeled) still on hand
+  here.
+- **2 of the 5 limit switches** — pan/tilt hard endstops. 3 remain on hand.
+- **2 of the GX16-4 aviation connectors** — panel-mount pass-through for the
+  gimbal's rotating sensor-head cable harness.
+
+Everything else from that inventory (standalone TB6600 driver, remaining
+steppers/switches/connectors, heatsinks, USB cable) is untouched and still
+unassigned here.
+
+See also: `THANKS-FROM-ARGUS.md` at the repo root.
