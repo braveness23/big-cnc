@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="237.0mm" height="188.0mm" viewBox="0 0 237.00 188.00" font-family="Arial">
+<rect width="237.00" height="188.00" fill="#fff"/>
+<polygon points="15.00,173.00 222.00,173.00 222.00,148.00 189.50,48.00 189.50,15.00 47.50,15.00 47.50,48.00 15.00,148.00" fill="none" stroke="#000" stroke-width="0.5"/>
+<line x1="15.00" y1="148.00" x2="222.00" y2="148.00" stroke="#c00" stroke-width="0.4" stroke-dasharray="4 2"/>
+<text x="223.00" y="148.00" font-size="3" fill="#c00">bend 1 - up (same hand)</text>
+<line x1="47.50" y1="48.00" x2="189.50" y2="48.00" stroke="#c00" stroke-width="0.4" stroke-dasharray="4 2"/>
+<text x="190.50" y="48.00" font-size="3" fill="#c00">bend 2 - up (same hand)</text>
+<circle cx="38.50" cy="160.50" r="4.50" fill="none" stroke="#000" stroke-width="0.4"/>
+<circle cx="198.50" cy="160.50" r="4.50" fill="none" stroke="#000" stroke-width="0.4"/>
+<circle cx="66.00" cy="31.00" r="4.50" fill="none" stroke="#000" stroke-width="0.4"/>
+<circle cx="171.00" cy="31.00" r="4.50" fill="none" stroke="#000" stroke-width="0.4"/>
+<text x="15.00" y="11.00" font-size="4">part #22 blank -- 158 x 207 x 2.0mm -- both bends the SAME way -- PHOTO-EST, print at 1:1</text>
+</svg>
